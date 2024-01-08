@@ -100,6 +100,8 @@ tensor g1 g2 =
 public export
 (#) : {n : Nat} -> {p : Nat} -> Unitary n -> Unitary p -> Unitary (n + p)
 (#) = tensor
+
+private
 infixr 10 #
 %hide Builtin.infixr.(#)
 

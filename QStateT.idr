@@ -1,8 +1,8 @@
 module QStateT
 
 import Control.Monad.State
-import LinearTypes
 import Control.Linear.LIO
+-- import LinearTypes
 
 %default total
 
@@ -34,9 +34,6 @@ v >>= f = MkQST $ \i => do
                          (a # m) <- runQStateT i v
                          runQStateT a (f m)
 
-
 public export
 modify : ((1 _ : i) -> o) -> QStateT i o ()
 modify f = MkQST $ \i => pure1 (f i # ())
-
-

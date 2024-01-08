@@ -2,8 +2,6 @@ module LinearTypes
 
 import Data.Vect
 
-infixr 10 ::
-infix 5 #
 
 %default total
 
@@ -11,11 +9,20 @@ public export
 data LFstPair : Type -> Type -> Type where
   (#) : (1 _ : a) -> b -> LFstPair a b
 
+private 
+infixr 5 # -- XXX was `infix` check this XXX 
+%hide Builtin.infixr.(#)
+
 
 public export
 data LVect : Nat -> Type ->  Type where
   Nil : LVect Z a
   (::) : (1 _ : a) -> (1 _ : LVect k a) -> LVect (S k) a
+
+private 
+infixr 10 ::
+%hide Prelude.Ops.infixr.(::)
+
 
 public export
 Show a => Show (LVect n a) where

@@ -14,6 +14,7 @@ import Control.Linear.LIO
 import LinearTypes
 import Unitary
 
+
 ||| The Qubit type is used to identify individual qubits. The Nat argument is
 ||| used to uniquely identify a qubit. This type does *not* carry any quantum
 ||| state information. The constructor MkQubit is *private* in order to prevent
