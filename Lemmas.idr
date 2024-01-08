@@ -40,18 +40,23 @@ lemmaAnd {a = True} {b = True} p1 p2 = Refl
 
 --LEMMAS ABOUT <, >, =, /=, <=, >= : TRANSITIVITY
 export
-lemmaTransLTELT : (i : Nat) -> (n : Nat) -> (p : Nat) -> (i <= n) = True -> (n < p) = True -> (i < p) = True
+lemmaTransLTELT : (i : Nat) -> (n : Nat) -> (p : Nat) 
+  -> (i <= n) = True -> (n < p) = True -> (i < p) = True
 lemmaTransLTELT 0 0 (S k) _ _ = Refl
 lemmaTransLTELT 0 (S k) (S j) _ _ = Refl
-lemmaTransLTELT (S k) (S n) (S p) prf1 prf2 = rewrite lemmaTransLTELT k n p prf1 prf2 in Refl
+lemmaTransLTELT (S k) (S n) (S p) prf1 prf2 = 
+  rewrite lemmaTransLTELT k n p prf1 prf2 in Refl
 
 export
-lemmaTransLTLTE : (i : Nat) -> (n : Nat) -> (p : Nat) -> (i < n) = True -> (n <= p) = True -> (i < p) = True
+lemmaTransLTLTE : (i : Nat) -> (n : Nat) -> (p : Nat) 
+  -> (i < n) = True -> (n <= p) = True -> (i < p) = True
 lemmaTransLTLTE 0 (S n) (S k) prf prf1 = Refl
-lemmaTransLTLTE (S k) (S n) (S p) prf prf1 = rewrite lemmaTransLTLTE k n p prf prf1 in Refl
+lemmaTransLTLTE (S k) (S n) (S p) prf prf1 = 
+  rewrite lemmaTransLTLTE k n p prf prf1 in Refl
 
 export
-lemmaTransitivity : (i : Nat) -> (n : Nat) -> (p : Nat) -> (i < n) = True -> (n < p) = True -> (i < p) = True
+lemmaTransitivity : (i : Nat) -> (n : Nat) -> (p : Nat) -> 
+  (i < n) = True -> (n < p) = True -> (i < p) = True
 lemmaTransitivity 0 (S k) (S m) prf prf1 = Refl
 lemmaTransitivity (S k) (S m) (S l) prf prf1 = lemmaTransitivity k m l prf prf1
 

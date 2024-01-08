@@ -6,8 +6,7 @@ import System.File
 import Injection
 import Lemmas
 
-infixr 9 .
-infixr 10 #
+
 
 %default total
 
@@ -17,11 +16,17 @@ infixr 10 #
 public export
 data Unitary : Nat -> Type where
   IdGate : Unitary n
-  H      : (j : Nat) -> {auto prf : (j < n) = True} -> Unitary n -> Unitary n
-  P      : (p : Double) -> (j : Nat) -> {auto prf : (j < n) = True} -> Unitary n -> Unitary n
+  H      : (j : Nat) -> 
+           {auto prf : (j < n) = True} -> 
+           Unitary n -> Unitary n
+  P      : (p : Double) -> (j : Nat) -> 
+           {auto prf : (j < n) = True} -> 
+           Unitary n -> Unitary n
   CNOT   : (c : Nat) -> (t : Nat) -> 
-            {auto prf1 : (c < n) = True} -> {auto prf2 : (t < n) = True} -> {auto prf3 : (c /= t) = True} -> 
-            Unitary n -> Unitary n
+           {auto prf1 : (c < n) = True} -> 
+           {auto prf2 : (t < n) = True} -> 
+           {auto prf3 : (c /= t) = True} -> 
+           Unitary n -> Unitary n
 
 
 -- P p = [[1,0],[0,e^ip]]
@@ -38,16 +43,22 @@ apply : {i : Nat} -> {n : Nat} ->
         Unitary n
 apply IdGate g2 _ = g2
 apply (H j g1) g2 v = 
-  let prf1 = indexInjectiveVect j n v {prf} 
-  in H (index j v) {prf = prf1} (apply g1 g2 v)
+  let 
+    prf1 = indexInjectiveVect j n v {prf} 
+  in 
+    H (index j v) {prf = prf1} (apply g1 g2 v)
 apply (P p j g1) g2 v = 
-  let prf1 = indexInjectiveVect j n v {prf}
-  in P p (index j v) {prf = prf1} (apply g1 g2 v)
+  let 
+    prf1 = indexInjectiveVect j n v {prf}
+  in 
+    P p (index j v) {prf = prf1} (apply g1 g2 v)
 apply {i} {n} (CNOT c t {prf1} {prf2} {prf3} g1) g2 v = 
   let prf4 = indexInjectiveVect c n v {prf = prf}
       prf5 = indexInjectiveVect t n v {prf = prf}
-      prf6 = differentIndexInjectiveVect c t n {prf1 = prf3} v {prf2 = prf} {prf3 = prf1} {prf4 = prf2}
-  in CNOT (index c v) (index t v) {prf1 = prf4} {prf2 = prf5} {prf3 = prf6} (apply g1 g2 v)
+      prf6 = differentIndexInjectiveVect c t n 
+        {prf1 = prf3} v {prf2 = prf} {prf3 = prf1} {prf4 = prf2}
+  in CNOT (index c v) (index t v) 
+    {prf1 = prf4} {prf2 = prf5} {prf3 = prf6} (apply g1 g2 v)
 
 ---------------------------COMPOSE-----------------------------
 |||Compose 2 circuits of the same size
@@ -61,6 +72,8 @@ compose (CNOT c t g1) g2 = CNOT c t (compose g1 g2)
 public export
 (.) : Unitary n -> Unitary n -> Unitary n
 (.) = compose
+infixr 9 .
+%hide Builtin.infixr.(.)
 
 ---------------------------ADJOINT-----------------------------
 |||Find the adjoint of a circuit
@@ -87,6 +100,8 @@ tensor g1 g2 =
 public export
 (#) : {n : Nat} -> {p : Nat} -> Unitary n -> Unitary p -> Unitary (n + p)
 (#) = tensor
+infixr 10 #
+%hide Builtin.infixr.(#)
 
 ----------------------CLASSICAL GATES--------------------------
 public export
